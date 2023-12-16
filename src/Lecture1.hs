@@ -20,20 +20,19 @@ It's absolutely okay if you feel that your implementations are not
 perfect. You can return to these exercises after future lectures and
 improve your solutions if you see any possible improvements.
 -}
-
-module Lecture1
-    ( makeSnippet
-    , sumOfSquares
-    , lastDigit
-    , minmax
-    , subString
-    , strSum
-    , lowerAndGreater
-    ) where
+module Lecture1 (
+    makeSnippet,
+    sumOfSquares,
+    lastDigit,
+    minmax,
+    subString,
+    strSum,
+    lowerAndGreater,
+) where
 
 -- VVV If you need to import libraries, do it after this line ... VVV
 
--- ^^^ and before this line. Otherwise the test suite might fail  ^^^
+-- ^ ^^ and before this line. Otherwise the test suite might fail  ^^^
 
 {- | Specify the type signature of the following function. Think about
 its behaviour, possible types for the function arguments and write the
@@ -53,8 +52,10 @@ their squares.
 Explanation: @sumOfSquares 3 4@ should be equal to @9 + 16@ and this
 is 25.
 -}
+
 -- DON'T FORGET TO SPECIFY THE TYPE IN HERE
-sumOfSquares x y = error "TODO!"
+sumOfSquares :: Int -> Int -> Int
+sumOfSquares x y = (x ^ 2) + (y ^ 2)
 
 {- | Implement a function that returns the last digit of a given number.
 
@@ -64,10 +65,11 @@ sumOfSquares x y = error "TODO!"
 7
 
 🕯 HINT: use the @mod@ function
-
 -}
+
 -- DON'T FORGET TO SPECIFY THE TYPE IN HERE
-lastDigit n = error "lastDigit: Not implemented!"
+lastDigit :: Int -> Int
+lastDigit n = mod (abs n) 10
 
 {- | Write a function that takes three numbers and returns the
 difference between the biggest number and the smallest one.
@@ -81,7 +83,7 @@ and 1 is the smallest, and 7 - 1 = 6.
 Try to use local variables (either let-in or where) to implement this
 function.
 -}
-minmax x y z = error "TODO"
+minmax x y z = maximum [x, y, z] - minimum [x, y, z]
 
 {- | Implement a function that takes a string, start and end positions
 and returns a substring of a given string from the start position to
@@ -98,7 +100,10 @@ start position can be considered as zero (e.g. substring from the
 first character) and negative end position should result in an empty
 string.
 -}
-subString start end str = error "TODO"
+subString start end str
+    | end < 0 = ""
+    | start < 0 = take (end + 1) str
+    | otherwise = take (end - start + 1) (drop start str)
 
 {- | Write a function that takes a String — space separated numbers,
 and finds a sum of the numbers inside this string.
@@ -108,7 +113,7 @@ and finds a sum of the numbers inside this string.
 
 The string contains only spaces and/or numbers.
 -}
-strSum str = error "TODO"
+strSum str = sum (map (read :: String -> Int) (words str))
 
 {- | Write a function that takes a number and a list of numbers and
 returns a string, saying how many elements of the list are strictly
@@ -123,4 +128,13 @@ and lower than 6 elements (4, 5, 6, 7, 8 and 9).
 
 🕯 HINT: Use recursion to implement this function.
 -}
-lowerAndGreater n list = error "TODO"
+lowerAndGreater n list = compare n 0 0 list
+  where
+    compare num lt gt [] = show num ++ " is greater than " ++ show lt ++ " elements and lower than " ++ show gt ++ " elements"
+    compare num lt gt (x : xs)
+        | x < num = compare num (lt + 1) gt xs
+        | x > num = compare num lt (gt + 1) xs
+        | otherwise = compare num lt gt xs
+
+example True [] = 0
+example False [x, y] = x + y
